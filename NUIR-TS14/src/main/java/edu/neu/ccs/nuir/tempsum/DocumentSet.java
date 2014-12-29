@@ -3,8 +3,6 @@
  */
 package edu.neu.ccs.nuir.tempsum;
 
-import java.util.ArrayList;
-
 import org.elasticsearch.action.search.SearchResponse;
 
 /**

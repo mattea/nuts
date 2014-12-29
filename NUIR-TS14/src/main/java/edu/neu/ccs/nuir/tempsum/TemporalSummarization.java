@@ -3,13 +3,11 @@
  */
 package edu.neu.ccs.nuir.tempsum;
 
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
 import org.elasticsearch.common.joda.time.DateTime;
 import org.elasticsearch.common.joda.time.Hours;
-import org.elasticsearch.indices.recovery.RecoveryState.Start;
 
 import edu.neu.ccs.nuir.tempsum.querymodel.QueryModel;
 import edu.neu.ccs.nuir.tempsum.sentencemodel.SentenceModel;
