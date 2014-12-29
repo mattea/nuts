@@ -8,15 +8,16 @@ import org.elasticsearch.common.joda.time.format.DateTimeFormat;
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter;
 import org.elasticsearch.node.Node;
 
-import edu.neu.ccs.nuir.tempsum.Config;
-import edu.neu.ccs.nuir.tempsum.DocumentSet;
-import edu.neu.ccs.nuir.tempsum.Topic;
 import static org.elasticsearch.node.NodeBuilder.*;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+
+import edu.neu.ccs.nuir.tempsum.Config;
+import edu.neu.ccs.nuir.tempsum.DocumentSet;
+import edu.neu.ccs.nuir.tempsum.Topic;
 
 public class Search {
 	String index;
