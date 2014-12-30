@@ -12,6 +12,7 @@ import static org.elasticsearch.node.NodeBuilder.*;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.index.query.FilterBuilders;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
@@ -40,11 +41,12 @@ public class Search {
 	public DocumentSet query(Topic topic, DateTime hour) {
 		String doc_type = this.docbase + datefmt.print(hour);
 		QueryBuilder query = QueryBuilders.termsQuery("body", this.terms);
+		query = QueryBuilders.filteredQuery(query, FilterBuilders.termFilter("source", "news"));
 		SearchResponse response = client.prepareSearch(this.index)
 				.setTypes(doc_type)
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.setQuery(query)             										  // Query
-				//.setPostFilter(FilterBuilders.rangeFilter("age").from(12).to(18))   // Filter
+				.setQuery(query)
+				//.setPostFilter(FilterBuilders.rangeFilter("age").from(12).to(18))
 				.setFrom(0).setSize(100).setExplain(true)
 				.execute()
 				.actionGet();

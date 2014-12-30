@@ -36,14 +36,13 @@ public class SentenceModel {
 			.put("damage",0.5)
 			.build();
 	
-	SentenceModel(Config conf) {
-		this.conf = conf;
-		this.keywords = new HashMap<String,Double>(basemap);
-	}
-	
 	SentenceModel(Config conf, Map<String,Double> keywords) {
 		this.conf = conf;
 		this.keywords = keywords;
+	}
+	
+	SentenceModel(Config conf) {
+		this(conf, new HashMap<String,Double>(basemap));
 	}
 	
 	double score(Sentence sent) {

@@ -18,10 +18,16 @@ import edu.neu.ccs.nuir.tempsum.Topic;
 public class TopicModel {
 	Topic topic;
 	TopicClass topicclass;
+	double hourweight;
+	
+	public TopicModel(Topic topic, double hourweight) {
+		this.topic = topic;
+		this.hourweight = hourweight;
+		topicclass = classify(topic);
+	}
 	
 	public TopicModel(Topic topic) {
-		this.topic = topic;
-		topicclass = classify(topic);
+		this(topic, 1);
 	}
 	
 	public void limitSentences(ArrayList<Sentence> sentences, DateTime hour) {
