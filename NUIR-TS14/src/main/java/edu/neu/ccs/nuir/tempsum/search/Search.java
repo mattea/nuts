@@ -43,7 +43,7 @@ public class Search {
 		SearchResponse response = client.prepareSearch(this.index)
 				.setTypes(doc_type)
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-				.setQuery(query)             										// Query
+				.setQuery(query)             										  // Query
 				//.setPostFilter(FilterBuilders.rangeFilter("age").from(12).to(18))   // Filter
 				.setFrom(0).setSize(100).setExplain(true)
 				.execute()
