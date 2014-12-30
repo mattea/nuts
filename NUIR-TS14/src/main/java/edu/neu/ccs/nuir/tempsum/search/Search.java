@@ -39,7 +39,7 @@ public class Search {
 	
 	public DocumentSet query(Topic topic, DateTime hour) {
 		String doc_type = this.docbase + datefmt.print(hour);
-		QueryBuilder query = QueryBuilders.termsQuery("doc", this.terms);
+		QueryBuilder query = QueryBuilders.termsQuery("body", this.terms);
 		SearchResponse response = client.prepareSearch(this.index)
 				.setTypes(doc_type)
 				.setSearchType(SearchType.DFS_QUERY_THEN_FETCH)

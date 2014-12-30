@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import org.elasticsearch.common.joda.time.DateTime;
 import org.elasticsearch.common.joda.time.Hours;
 
-import edu.neu.ccs.nuir.tempsum.querymodel.QueryModel;
 import edu.neu.ccs.nuir.tempsum.sentencemodel.SentenceModel;
 import edu.neu.ccs.nuir.tempsum.search.Search;
+import edu.neu.ccs.nuir.tempsum.topicmodel.TopicModel;
 
 
 /**
@@ -101,7 +101,7 @@ public class TemporalSummarization {
 	class TopicRunner implements Runnable {
 		TemporalSummarization ts;
 		Topic topic;
-		QueryModel querymodel;
+		TopicModel querymodel;
 		SentenceModel sentencemodel;
 		Search search;
 		DateTime currTime;
@@ -118,9 +118,9 @@ public class TemporalSummarization {
 		}
 		
 		public void run() {
-			querymodel = QueryModel.load(ts.config, topic);
-			sentencemodel = SentenceModel.load(ts.config);
+			querymodel = TopicModel.load(ts.config, topic);
 			search = new Search(ts.config);
+			sentencemodel = SentenceModel.load(ts.config);
 			
 			int maxHour = Hours.hoursBetween(topic.start,topic.end).getHours();
 			
@@ -135,10 +135,12 @@ public class TemporalSummarization {
 		}
 		
 		void outputSentences(ArrayList<Sentence> sentences) {
-			String hourstr = currTime.toString();
+			// Convert Millis to seconds, then add an hour minus one second as reporting time
+			String hourstr = String.valueOf((long)((currTime.getMillis() / 1000)  + 3599));
 			String currLine;
 			for (Sentence sent : sentences) {
-				currLine = String.format("%s\t%s\t%s\t%s\t%s\t%s\t%s", topic.id, ts.teamid, ts.runid, sent.doc.id, sent.id, hourstr, sent.score);
+				currLine = topic.id + "\t" + ts.teamid + "\t" + ts.runid + "\t" +
+							sent.doc.id + "\t" + sent.id + "\t" + hourstr + "\t" + sent.score;
 				out.println(currLine);
 			}
 			out.flush();

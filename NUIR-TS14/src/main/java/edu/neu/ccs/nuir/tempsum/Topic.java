@@ -21,12 +21,12 @@ import org.w3c.dom.NodeList;
  *
  */
 public class Topic {
-	String id;
-	String title;
-	DateTime start;
-	DateTime end;
-	String query;
-	String type;
+	public String id;
+	public String title;
+	public DateTime start;
+	public DateTime end;
+	public String query;
+	public String ttype;
 	Topic(Element xml) {
 		id = ((Node) xml.getElementsByTagName("id").item(0)).getNodeValue();
 		title = ((Node) xml.getElementsByTagName("title").item(0)).getNodeValue();
@@ -38,7 +38,7 @@ public class Topic {
 		end = new DateTime ( Long.parseLong(endstr) * 1000L, DateTimeZone.forID( "UTC" ) );
 		
 		query = ((Node) xml.getElementsByTagName("query").item(0)).getNodeValue();
-		type = ((Node) xml.getElementsByTagName("type").item(0)).getNodeValue();
+		ttype = ((Node) xml.getElementsByTagName("type").item(0)).getNodeValue();
 	}
 	static Topic[] load(Config conf) throws Exception {
 		Topic[] topics;
