@@ -41,10 +41,10 @@ public class TemporalSummarization {
 			System.exit(1);
 		}
 		
-		
 		for (Topic topic : topics) {
 //			runTopic(topic);
 			new TopicRunner(this, topic).run();
+//			(new Thread(new TopicRunner(this, topic))).run();
 		}
 	}
 	
@@ -98,7 +98,7 @@ public class TemporalSummarization {
 
 	}
 	
-	class TopicRunner {
+	class TopicRunner implements Runnable {
 		TemporalSummarization ts;
 		Topic topic;
 		QueryModel querymodel;
@@ -117,7 +117,7 @@ public class TemporalSummarization {
 			this(ts, topic, System.out);
 		}
 		
-		void run() {
+		public void run() {
 			querymodel = QueryModel.load(ts.config, topic);
 			sentencemodel = SentenceModel.load(ts.config);
 			search = new Search(ts.config);
