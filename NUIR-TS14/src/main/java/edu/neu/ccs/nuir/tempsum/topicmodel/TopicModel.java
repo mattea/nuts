@@ -31,7 +31,7 @@ public class TopicModel {
 	}
 	
 	public void limitSentences(ArrayList<Sentence> sentences, DateTime hour) {
-		
+		//TODO take into account how many sentences have been output, and some potential global number of updates desired
 	}
 	
 	public static TopicModel load(Config conf, Topic topic) {

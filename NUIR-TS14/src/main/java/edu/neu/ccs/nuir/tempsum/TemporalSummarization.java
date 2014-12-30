@@ -44,7 +44,7 @@ public class TemporalSummarization {
 		for (Topic topic : topics) {
 //			runTopic(topic);
 			new TopicRunner(this, topic).run();
-//			(new Thread(new TopicRunner(this, topic))).run();
+//			(new Thread(new TopicRunner(this, topic))).start();
 		}
 	}
 	
