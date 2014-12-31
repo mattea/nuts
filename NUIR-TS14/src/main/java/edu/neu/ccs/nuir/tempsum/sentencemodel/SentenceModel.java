@@ -92,6 +92,7 @@ public class SentenceModel {
 			String statefile = conf.get("sentence_model");
 	        FileInputStream fis = new FileInputStream(statefile);
 	        ObjectInputStream ois = new ObjectInputStream(fis);
+			@SuppressWarnings("unchecked")
 			Map<String,Double> state = (Map<String,Double>) ois.readObject();
 	        ois.close();
 			return new SentenceModel(conf, state);

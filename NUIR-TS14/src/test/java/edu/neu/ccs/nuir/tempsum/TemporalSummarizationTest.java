@@ -4,11 +4,9 @@ import static org.elasticsearch.node.NodeBuilder.nodeBuilder;
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import org.elasticsearch.client.AdminClient;
 import org.elasticsearch.client.Client;
-import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.node.Node;
 import org.junit.Test;
 

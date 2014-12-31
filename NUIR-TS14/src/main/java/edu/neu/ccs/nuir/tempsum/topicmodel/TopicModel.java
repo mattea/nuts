@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.elasticsearch.common.joda.time.DateTime;
 
 import edu.neu.ccs.nuir.tempsum.Config;
+import edu.neu.ccs.nuir.tempsum.ResultSet;
 import edu.neu.ccs.nuir.tempsum.Sentence;
 import edu.neu.ccs.nuir.tempsum.Topic;
 
@@ -19,18 +20,20 @@ public class TopicModel {
 	Topic topic;
 	TopicClass topicclass;
 	double hourweight;
+	int sentcount;
 	
 	public TopicModel(Topic topic, double hourweight) {
 		this.topic = topic;
 		this.hourweight = hourweight;
 		topicclass = classify(topic);
+		sentcount = 0;
 	}
 	
 	public TopicModel(Topic topic) {
 		this(topic, 1);
 	}
 	
-	public void limitSentences(ArrayList<Sentence> sentences, DateTime hour) {
+	public void limitSentences(ResultSet sentences, DateTime hour) {
 		//TODO take into account how many sentences have been output, and some potential global number of updates desired
 	}
 	
