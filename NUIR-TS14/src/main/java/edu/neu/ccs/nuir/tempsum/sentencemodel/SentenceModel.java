@@ -15,6 +15,7 @@ import com.google.common.collect.ImmutableMap;
 
 import edu.neu.ccs.nuir.tempsum.Config;
 import edu.neu.ccs.nuir.tempsum.DocumentSet;
+import edu.neu.ccs.nuir.tempsum.ResultSet;
 import edu.neu.ccs.nuir.tempsum.Sentence;
 
 
@@ -49,11 +50,11 @@ public class SentenceModel {
 		return 0;
 	}
 	
-	public ArrayList<Sentence> rankSentences(DocumentSet docs) {
+	public ResultSet rankSentences(DocumentSet docs) {
 		ArrayList<Sentence> sents = new ArrayList<Sentence>();
 		
 		
-		return sents;
+		return new ResultSet(sents);
 	}
 	
 	public void train() {
@@ -76,7 +77,7 @@ public class SentenceModel {
 	
 	public void save(Config conf) {
 		try {
-			String statefile = conf.get("sentence_model");		
+			String statefile = conf.get("sentence_model");
 			FileOutputStream fos = new FileOutputStream(statefile);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(this.keywords);
