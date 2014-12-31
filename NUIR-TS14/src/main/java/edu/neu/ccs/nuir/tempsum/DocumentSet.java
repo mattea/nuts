@@ -23,5 +23,4 @@ public class DocumentSet {
 			hits.put(hit.getId(), hit);
 		}
 	}
-
 }

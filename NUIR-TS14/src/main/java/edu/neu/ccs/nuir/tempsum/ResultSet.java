@@ -12,4 +12,13 @@ import java.util.ArrayList;
 public class ResultSet {
 	public ArrayList<Sentence> sentences;
 	public double threshold;
+	
+	public ResultSet(ArrayList<Sentence> sentences, double threshold) {
+		this.sentences = sentences;
+		this.threshold = threshold;
+	}
+	
+	public ResultSet(ArrayList<Sentence> sentences) {
+		this(sentences, 0);
+	}
 }

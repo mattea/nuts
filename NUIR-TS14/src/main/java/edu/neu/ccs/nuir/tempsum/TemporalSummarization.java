@@ -101,7 +101,7 @@ public class TemporalSummarization {
 	class TopicRunner implements Runnable {
 		TemporalSummarization ts;
 		Topic topic;
-		TopicModel querymodel;
+		TopicModel topicmodel;
 		SentenceModel sentencemodel;
 		Search search;
 		DateTime currTime;
@@ -118,7 +118,7 @@ public class TemporalSummarization {
 		}
 		
 		public void run() {
-			querymodel = TopicModel.load(ts.config, topic);
+			topicmodel = TopicModel.load(ts.config, topic);
 			search = new Search(ts.config);
 			sentencemodel = SentenceModel.load(ts.config);
 			
@@ -127,9 +127,9 @@ public class TemporalSummarization {
 			for (int currHour = 0; currHour < maxHour; currHour++ ) {
 				currTime = topic.start.plusHours(currHour);
 				DocumentSet results = search.query(topic, currTime);
-				ArrayList<Sentence> sentences = sentencemodel.rankSentences(results);
+				ResultSet sentences = sentencemodel.rankSentences(results);
 				search.updateModel(sentencemodel.topTerms());
-				querymodel.limitSentences(sentences, currTime);
+				topicmodel.limitSentences(sentences, currTime);
 				outputSentences(sentences);
 			}
 		}
