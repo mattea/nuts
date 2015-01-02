@@ -4,7 +4,6 @@
 package edu.neu.ccs.nuir.tempsum;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 
 import org.elasticsearch.common.joda.time.DateTime;
 import org.elasticsearch.common.joda.time.Hours;
@@ -129,18 +128,19 @@ public class TemporalSummarization {
 				DocumentSet results = search.query(topic, currTime);
 				ResultSet sentences = sentencemodel.rankSentences(results);
 				search.updateModel(sentencemodel.topTerms());
-				topicmodel.limitSentences(sentences, currTime);
+				topicmodel.limitSentences(sentences, currHour);
 				outputSentences(sentences);
+				sentences.flush();
 			}
 		}
 		
-		void outputSentences(ArrayList<Sentence> sentences) {
+		void outputSentences(ResultSet sentences) {
 			// Convert Millis to seconds, then add an hour minus one second as reporting time
 			String hourstr = String.valueOf((long)((currTime.getMillis() / 1000)  + 3599));
 			String currLine;
 			for (Sentence sent : sentences) {
 				currLine = topic.id + "\t" + ts.teamid + "\t" + ts.runid + "\t" +
-							sent.doc.id + "\t" + sent.id + "\t" + hourstr + "\t" + sent.score;
+							sent.did + "\t" + sent.id + "\t" + hourstr + "\t" + sent.score;
 				out.println(currLine);
 			}
 			out.flush();

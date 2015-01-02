@@ -6,6 +6,7 @@ package edu.neu.ccs.nuir.tempsum.topicmodel;
 import java.util.ArrayList;
 
 import org.elasticsearch.common.joda.time.DateTime;
+import org.jblas.util.Random;
 
 import edu.neu.ccs.nuir.tempsum.Config;
 import edu.neu.ccs.nuir.tempsum.ResultSet;
@@ -33,8 +34,22 @@ public class TopicModel {
 		this(topic, 1);
 	}
 	
-	public void limitSentences(ResultSet sentences, DateTime hour) {
+	public void limitSentences(ResultSet sentences, int currHour) {
 		//TODO take into account how many sentences have been output, and some potential global number of updates desired
+		double offsetscore = topicclass.scoreTime(currHour);
+		double sizescore = topicclass.scoreSize(sentcount);
+		double rand = Random.nextGaussian();
+		
+		double score = rand + (offsetscore + sizescore) / 2;
+		
+		if (score < 0)
+			score = 0;
+		else if (score > 1)
+			score = 1;
+		
+		score = Math.round(score * sentences.size());
+		sentences.subList(0, (int) score);
+		sentcount += sentences.size();
 	}
 	
 	public static TopicModel load(Config conf, Topic topic) {
@@ -78,6 +93,8 @@ public class TopicModel {
 	
 	abstract class TopicClass {
 		Topic topic;
+		static final int totupd = 300;
+		
 		public TopicClass(Topic topic) {
 			this.topic = topic;
 		}
@@ -95,6 +112,10 @@ public class TopicModel {
 		}
 		public double scoreTime(long hour) {
 			return offsetScore(hour) * timeOfDayWeight(hour);
+		}
+		
+		public double scoreSize(int count) {
+			return (totupd - count)/totupd;
 		}
 	}
 	class ShortTopic extends TopicClass {

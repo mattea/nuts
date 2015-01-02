@@ -17,6 +17,7 @@ import edu.neu.ccs.nuir.tempsum.Config;
 import edu.neu.ccs.nuir.tempsum.DocumentSet;
 import edu.neu.ccs.nuir.tempsum.ResultSet;
 import edu.neu.ccs.nuir.tempsum.Sentence;
+import edu.neu.ccs.nuir.tempsum.Token;
 
 
 // Create simple TF/IDF model of all topics
@@ -51,10 +52,27 @@ public class SentenceModel {
 	}
 	
 	public ResultSet rankSentences(DocumentSet docs) {
-		ArrayList<Sentence> sents = new ArrayList<Sentence>();
+		ResultSet sents = docs.extractSentences();
 		
+		calcRelevance(sents);
 		
-		return new ResultSet(sents);
+		return sents;
+	}
+	
+	void calcRelevance(ResultSet sents) {
+		for(Sentence sent: sents) {
+			sent.rel = matchModel(sent);
+		}
+	}
+	
+	double matchModel(Sentence sent) {
+		double score = 0;
+		for(Token tok: sent.tokens()) {
+			if (keywords.containsKey(tok.text)) {
+				score = Math.max(score, keywords.get(tok.text));
+			}
+		}
+		return score;
 	}
 	
 	public void train() {
@@ -66,13 +84,6 @@ public class SentenceModel {
 		ArrayList<String> terms = new ArrayList<String>();
 
 		return terms;
-	}
-	
-
-	public ArrayList<String> topTerms(DocumentSet docs) {
-		 ArrayList<String> terms = new ArrayList<String>();
-		 
-		 return terms;
 	}
 	
 	public void save(Config conf) {

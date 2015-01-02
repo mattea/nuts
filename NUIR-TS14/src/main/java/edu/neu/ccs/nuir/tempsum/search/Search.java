@@ -1,6 +1,7 @@
 package edu.neu.ccs.nuir.tempsum.search;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.elasticsearch.client.Client;
 import org.elasticsearch.common.joda.time.DateTime;
@@ -25,7 +26,7 @@ public class Search {
 	Node node;
 	Client client;
 	String docbase;
-	ArrayList<String> terms;
+	HashSet<String> terms;
 	DocumentSet lastset;
 	DateTime lasthour;
 	static DateTimeFormatter datefmt = DateTimeFormat.forPattern("YYYY-MM-dd-HH");
@@ -33,7 +34,7 @@ public class Search {
 	public Search(Config conf) {
 		this.index = conf.get("index");
 		this.docbase = conf.get("docbase");
-		this.terms = new ArrayList<String>();
+		this.terms = new HashSet<String>();
 		node = nodeBuilder().client(true).node();
 		client = node.client();
 	}
