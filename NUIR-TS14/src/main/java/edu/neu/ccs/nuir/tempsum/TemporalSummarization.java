@@ -23,8 +23,6 @@ public class TemporalSummarization {
 	Topic[] topics;
 	String teamid;
 	String runid;
-	//SentenceModel model;
-	//Search search;
 	TemporalSummarization(Config config) {
 		this.config = config;
 		this.teamid = config.get("teamid");
@@ -41,35 +39,10 @@ public class TemporalSummarization {
 		}
 		
 		for (Topic topic : topics) {
-//			runTopic(topic);
 			new TopicRunner(this, topic).run();
 //			(new Thread(new TopicRunner(this, topic))).start();
 		}
 	}
-	
-//	void runTopic(Topic topic) {
-//		QueryModel querymodel = QueryModel.load(this.config, topic);
-//		SentenceModel sentencemodel = SentenceModel.load(this.config);
-//		Search search = new Search(this.config);
-//		
-//		int maxHour = Hours.hoursBetween(topic.start,topic.end).getHours();
-//		DateTime currTime;
-//		
-//		for (int currHour = 0; currHour < maxHour; currHour++ ) {
-//			currTime = topic.start.plusHours(currHour);
-//			DocumentSet results = search.query(topic, currTime);
-//			ArrayList<Sentence> sentences = sentencemodel.rankSentences(results);
-//			search.updateModel(sentencemodel.topTerms());
-//			querymodel.limitSentences(sentences, currTime);
-//			outputSentences(sentences, currTime, System.out);
-//			//Separate system runner from per topic 
-//		}
-//	}
-//	
-//	void outputSentences(ArrayList<Sentence> sentences) {
-//		String hourfmt = time.toString();
-//		out.println(hourfmt + "");
-//	}
 	
 	void train() {
 		
@@ -82,7 +55,6 @@ public class TemporalSummarization {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		String configFile = "config.properties";
 		if (args.length > 0) {
 			configFile = args[0];
@@ -146,5 +118,4 @@ public class TemporalSummarization {
 			out.flush();
 		}
 	}
-
 }

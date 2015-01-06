@@ -27,71 +27,35 @@ import edu.neu.ccs.nuir.tempsum.Token;
  * @author mattea
  *
  */
-public class SentenceModel {
+abstract class SentenceModel {
 	Config conf;
-	Map<String,Double> keywords;
-	static final Map<String, Double> basemap = ImmutableMap.<String, Double>builder()
-			.put("kill",0.9)
-			.put("arrest",0.9)
-			.put("hurt",0.8)
-			.put("injure",0.6)
-			.put("damage",0.5)
-			.build();
-	
-	SentenceModel(Config conf, Map<String,Double> keywords) {
-		this.conf = conf;
-		this.keywords = keywords;
-	}
 	
 	SentenceModel(Config conf) {
-		this(conf, new HashMap<String,Double>(basemap));
+		this.conf = conf;
 	}
 	
-	double score(Sentence sent) {
-		return 0;
-	}
+	abstract double score(Sentence sent);
 	
 	public ResultSet rankSentences(DocumentSet docs) {
 		ResultSet sents = docs.extractSentences();
-		
 		calcRelevance(sents);
-		
 		return sents;
 	}
 	
-	void calcRelevance(ResultSet sents) {
-		for(Sentence sent: sents) {
-			sent.rel = matchModel(sent);
-		}
-	}
+	abstract void calcRelevance(ResultSet sents);
 	
-	double matchModel(Sentence sent) {
-		double score = 0;
-		for(Token tok: sent.tokens()) {
-			if (keywords.containsKey(tok.text)) {
-				score = Math.max(score, keywords.get(tok.text));
-			}
-		}
-		return score;
-	}
+	abstract double matchModel(Sentence sent);
 	
-	public void train() {
-		// Eventually learn a model from the training data
-	}
+	public abstract void train();
 
-	public ArrayList<String> topTerms() {
-		// TODO: Sort the keywords by their score and return them.
-		ArrayList<String> terms = new ArrayList<String>();
-
-		return terms;
-	}
+	public abstract ArrayList<String> topTerms();
 	
 	public void save(Config conf) {
 		try {
 			String statefile = conf.get("sentence_model");
 			FileOutputStream fos = new FileOutputStream(statefile);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(this.keywords);
+			oos.writeObject(this);
 			oos.close();
 		} catch (IOException e) {
 			System.err.println("Can not find/open file in which to save model, not saving...");
@@ -102,14 +66,14 @@ public class SentenceModel {
 	public static SentenceModel load(Config conf) {
 		try {
 			String statefile = conf.get("sentence_model");
+//			String modeltype = conf.get("sentence_model_class");
 	        FileInputStream fis = new FileInputStream(statefile);
 	        ObjectInputStream ois = new ObjectInputStream(fis);
-			@SuppressWarnings("unchecked")
-			Map<String,Double> state = (Map<String,Double>) ois.readObject();
+			SentenceModel model = (SentenceModel) ois.readObject();
 	        ois.close();
-			return new SentenceModel(conf, state);
+			return model;
 		} catch (IOException|ClassNotFoundException e) {
-			return new SentenceModel(conf);
+			return new KeywordSentenceModel(conf);
 		}
 	}
 }
