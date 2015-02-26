@@ -9,6 +9,8 @@ public abstract class IndependentSentenceModel extends SentenceModel {
 	IndependentSentenceModel(Config conf) {
 		super(conf);
 	}
+
+	abstract double matchModel(Sentence sent);
 	
 	void calcRelevance(ResultSet sents) {
 		for(Sentence sent: sents) {

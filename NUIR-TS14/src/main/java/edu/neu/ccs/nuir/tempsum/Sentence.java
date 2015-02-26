@@ -3,6 +3,9 @@
  */
 package edu.neu.ccs.nuir.tempsum;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import org.elasticsearch.search.SearchHit;
 
 /**
@@ -13,10 +16,12 @@ public class Sentence {
 	public double score;
 	public double rel;
 	public String text;
-	Token[] tokens;
+	Token[] tokens = null;
+	HashSet<String> bow = null;
 	public SearchHit doc;
 	public int id;
 	public String did;
+	public double novelty;
 	
 	public Sentence(int id, SearchHit doc, String text, Token[] tokens, double score) {
 		this.id = id;
@@ -37,6 +42,15 @@ public class Sentence {
 	
 	public void flush() {
 		doc = null;
+	}
+	
+	public HashSet<String> bagofwords() {
+		if (bow != null) {
+			return bow;
+		}
+		bow = new HashSet<String>();
+		bow.addAll(Arrays.asList(text.split("\\s")));
+		return bow;
 	}
 	
 	public Token[] tokens() {

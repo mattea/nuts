@@ -52,10 +52,4 @@ public final class KeywordSentenceModel extends IndependentSentenceModel {
 		return terms;
 	}
 
-	@Override
-	double score(Sentence sent) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 }

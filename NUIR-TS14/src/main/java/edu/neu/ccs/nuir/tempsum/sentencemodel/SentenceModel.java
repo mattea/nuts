@@ -34,8 +34,6 @@ abstract class SentenceModel {
 		this.conf = conf;
 	}
 	
-	abstract double score(Sentence sent);
-	
 	public ResultSet rankSentences(DocumentSet docs) {
 		ResultSet sents = docs.extractSentences();
 		calcRelevance(sents);
@@ -43,8 +41,6 @@ abstract class SentenceModel {
 	}
 	
 	abstract void calcRelevance(ResultSet sents);
-	
-	abstract double matchModel(Sentence sent);
 	
 	public abstract void train();
 
